@@ -112,7 +112,7 @@ class SearchDialog(QDialog):
         # Buttons
         button_layout = QHBoxLayout()
 
-        self.clear_btn = QPushButton("Clear Filters")
+        self.clear_btn = QPushButton("Reset")
         self.clear_btn.clicked.connect(self.clear_filters)
 
         self.search_btn = QPushButton("Search")
