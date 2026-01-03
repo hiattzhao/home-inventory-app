@@ -37,9 +37,16 @@ class Database:
                 purchase_date TEXT,
                 notes TEXT,
                 photo_path TEXT,
-                created_at TEXT NOT NULL
+                created_at TEXT NOT NULL,
+                location TEXT
             )
         """)
+        
+        # Check if location column exists, add if not (for existing databases)
+        self.cursor.execute("PRAGMA table_info(items)")
+        columns = [column[1] for column in self.cursor.fetchall()]
+        if 'location' not in columns:
+            self.cursor.execute("ALTER TABLE items ADD COLUMN location TEXT")
         
         # Create photos table for multiple photos per item
         self.cursor.execute("""
@@ -53,6 +60,26 @@ class Database:
                 FOREIGN KEY (item_id) REFERENCES items (id) ON DELETE CASCADE
             )
         """)
+        
+        # Create locations table
+        self.cursor.execute("""
+            CREATE TABLE IF NOT EXISTS locations (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT UNIQUE NOT NULL
+            )
+        """)
+        
+        # Populate default locations if empty
+        self.cursor.execute("SELECT COUNT(*) FROM locations")
+        if self.cursor.fetchone()[0] == 0:
+            default_locations = [
+                'Living Room', 'Kitchen', 'Bedroom', 'Bathroom', 
+                'Garage', 'Basement', 'Attic', 'Office'
+            ]
+            for loc in default_locations:
+                self.cursor.execute("INSERT INTO locations (name) VALUES (?)", (loc,))
+        
+        self.conn.commit()
         
         # Create categories table
         self.cursor.execute("""
@@ -84,7 +111,7 @@ class Database:
         self.conn.commit()
     
     def add_item(self, name: str, category: str, value: float,
-                 purchase_date: str, notes: str = "", photo_path: str = "") -> int:
+                 purchase_date: str, notes: str = "", photo_path: str = "", location: str = "") -> int:
         """
         Add a new item to the database.
         
@@ -102,15 +129,15 @@ class Database:
         created_at = datetime.now().isoformat()
         
         self.cursor.execute("""
-            INSERT INTO items (name, category, value, purchase_date, notes, photo_path, created_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-        """, (name, category, value, purchase_date, notes, photo_path, created_at))
+            INSERT INTO items (name, category, value, purchase_date, notes, photo_path, created_at, location)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        """, (name, category, value, purchase_date, notes, photo_path, created_at, location))
         
         self.conn.commit()
         return self.cursor.lastrowid
     
     def update_item(self, item_id: int, name: str, category: str, value: float,
-                    purchase_date: str, notes: str = "", photo_path: str = "") -> bool:
+                    purchase_date: str, notes: str = "", photo_path: str = "", location: str = "") -> bool:
         """
         Update an existing item.
         
@@ -129,9 +156,9 @@ class Database:
         self.cursor.execute("""
             UPDATE items
             SET name = ?, category = ?, value = ?, purchase_date = ?,
-                notes = ?, photo_path = ?
+                notes = ?, photo_path = ?, location = ?
             WHERE id = ?
-        """, (name, category, value, purchase_date, notes, photo_path, item_id))
+        """, (name, category, value, purchase_date, notes, photo_path, location, item_id))
         
         self.conn.commit()
         return self.cursor.rowcount > 0
@@ -175,7 +202,7 @@ class Database:
     
     def search_items(self, name: str = "", category: str = "",
                      min_value: float = None, max_value: float = None,
-                     start_date: str = "", end_date: str = "") -> List[Tuple]:
+                     start_date: str = "", end_date: str = "", location: str = "") -> List[Tuple]:
         """
         Search and filter items based on criteria.
         
@@ -200,6 +227,10 @@ class Database:
         if category and category != "All":
             query += " AND category = ?"
             params.append(category)
+        
+        if location:
+            query += " AND location LIKE ?"
+            params.append(f"%{location}%")
         
         if min_value is not None:
             query += " AND value >= ?"
@@ -255,25 +286,80 @@ class Database:
     
     def delete_category(self, category_name: str) -> bool:
         """
-        Delete a category from the database.
-        Note: This will not delete items in this category.
+        Delete a category.
+        
+        Note: Default categories cannot be deleted.
         
         Args:
-            category_name: Name of the category to delete
+            category_name: Name of category to delete
             
         Returns:
-            True if deletion was successful, False otherwise
+            True if deleted, False if could not be deleted (e.g. default)
         """
-        # Don't allow deletion of default categories
+        # List of default categories that shouldn't be deleted
         default_categories = [
-            "Electronics", "Furniture", "Tools", "Kitchen",
-            "Clothing", "Books", "Sports", "Other"
+            'Electronics', 'Furniture', 'Clothing', 'Books', 
+            'Appliances', 'Tools', 'Collectibles', 'Other'
         ]
         
         if category_name in default_categories:
             return False
-        
+            
         self.cursor.execute("DELETE FROM categories WHERE name = ?", (category_name,))
+        self.conn.commit()
+        return self.cursor.rowcount > 0
+
+    def get_locations(self) -> List[str]:
+        """
+        Get all locations.
+        
+        Returns:
+            List of location names
+        """
+        self.cursor.execute("SELECT name FROM locations ORDER BY name")
+        return [row[0] for row in self.cursor.fetchall()]
+
+    def add_location(self, location_name: str) -> bool:
+        """
+        Add a new location.
+        
+        Args:
+            location_name: Name of new location
+            
+        Returns:
+            True if successful, False if location already exists
+        """
+        try:
+            self.cursor.execute(
+                "INSERT INTO locations (name) VALUES (?)",
+                (location_name,)
+            )
+            self.conn.commit()
+            return True
+        except sqlite3.IntegrityError:
+            return False
+
+    def delete_location(self, location_name: str) -> bool:
+        """
+        Delete a location.
+        
+        Note: Default locations cannot be deleted.
+        
+        Args:
+            location_name: Name of location to delete
+            
+        Returns:
+            True if deleted, False if default
+        """
+        default_locations = [
+            'Living Room', 'Kitchen', 'Bedroom', 'Bathroom', 
+            'Garage', 'Basement', 'Attic', 'Office'
+        ]
+        
+        if location_name in default_locations:
+            return False
+            
+        self.cursor.execute("DELETE FROM locations WHERE name = ?", (location_name,))
         self.conn.commit()
         return self.cursor.rowcount > 0
     

@@ -47,7 +47,7 @@ class CSVExporter:
                 # Write header
                 writer.writerow([
                     'ID', 'Name', 'Category', 'Value', 'Purchase Date',
-                    'Notes', 'Photo Path', 'Created At'
+                    'Notes', 'Photo Path', 'Created At', 'Location'
                 ])
                 
                 # Write data

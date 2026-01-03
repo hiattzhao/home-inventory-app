@@ -53,6 +53,11 @@ class SearchDialog(QDialog):
         self.category_combo.addItems(self.categories)
         form_layout.addRow("Category:", self.category_combo)
         
+        # Location search
+        self.location_input = QLineEdit()
+        self.location_input.setPlaceholderText("Search by location...")
+        form_layout.addRow("Location:", self.location_input)
+        
         # Value range
         value_layout = QHBoxLayout()
         self.min_value_input = QDoubleSpinBox()
@@ -120,6 +125,7 @@ class SearchDialog(QDialog):
         """Clear all filter fields."""
         self.name_input.clear()
         self.category_combo.setCurrentIndex(0)
+        self.location_input.clear()
         self.min_value_input.setValue(0)
         self.max_value_input.setValue(999999.99)
         self.start_date_input.setDate(QDate(2000, 1, 1))
@@ -135,6 +141,7 @@ class SearchDialog(QDialog):
         filters = {
             'name': self.name_input.text().strip(),
             'category': self.category_combo.currentText(),
+            'location': self.location_input.text().strip(),
             'min_value': None if self.min_value_input.value() == 0 else self.min_value_input.value(),
             'max_value': None if self.max_value_input.value() == 999999.99 else self.max_value_input.value(),
             'start_date': "" if self.start_date_input.date() == QDate(2000, 1, 1) else self.start_date_input.date().toString("yyyy-MM-dd"),

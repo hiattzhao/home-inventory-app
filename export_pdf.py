@@ -82,13 +82,14 @@ class PDFExporter:
             elements.append(Spacer(1, 0.3*inch))
             
             # Create table data
-            table_data = [['Name', 'Category', 'Value', 'Purchase Date', 'Notes']]
+            table_data = [['Name', 'Category', 'Location', 'Value', 'Purchase Date', 'Notes']]
             
             for item in items:
-                # item format: (id, name, category, value, purchase_date, notes, photo_path, created_at)
+                # item format: (id, name, category, value, purchase_date, notes, photo_path, created_at, location)
                 row = [
                     item[1][:30],  # Name (truncated)
                     item[2],  # Category
+                    (item[8][:20] or '') if len(item) > 8 else '', # Location
                     f"${float(item[3]):,.2f}",  # Value
                     item[4] or 'N/A',  # Purchase date
                     (item[5][:50] + '...') if item[5] and len(item[5]) > 50 else (item[5] or '')  # Notes (truncated)
@@ -96,7 +97,7 @@ class PDFExporter:
                 table_data.append(row)
             
             # Create table
-            table = Table(table_data, colWidths=[1.5*inch, 1*inch, 0.8*inch, 1*inch, 2*inch])
+            table = Table(table_data, colWidths=[1.5*inch, 1*inch, 1*inch, 0.8*inch, 1*inch, 1.5*inch])
             table.setStyle(TableStyle([
                 # Header styling
                 ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#3498db')),
@@ -109,7 +110,9 @@ class PDFExporter:
                 # Data styling
                 ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
                 ('TEXTCOLOR', (0, 1), (-1, -1), colors.black),
-                ('ALIGN', (2, 1), (2, -1), 'RIGHT'),  # Align value column right
+                ('ALIGN', (3, 1), (3, -1), 'RIGHT'),  # Align value column right
+                ('ALIGN', (0, 1), (-1, -1), 'LEFT'), # Default align all data left
+                ('ALIGN', (2, 1), (2, -1), 'CENTER'), # Align location column center
                 ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
                 ('FONTSIZE', (0, 1), (-1, -1), 8),
                 ('TOPPADDING', (0, 1), (-1, -1), 6),
