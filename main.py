@@ -112,6 +112,7 @@ class MainWindow(QMainWindow):
         
         self.setup_ui()
         self.load_items()
+        self.table.horizontalHeader().setSortIndicatorShown(False)
     
     def setup_ui(self):
         """Set up the user interface."""
@@ -141,6 +142,7 @@ class MainWindow(QMainWindow):
         
         # Custom header with checkbox
         header = CheckBoxHeader(Qt.Orientation.Horizontal, self.table)
+        header.setSortIndicatorShown(False)
         self.table.setHorizontalHeader(header)
         header.checkBoxClicked.connect(self.toggle_all_selection)
         
