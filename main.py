@@ -193,7 +193,9 @@ class MainWindow(QMainWindow):
         header.setSectionResizeMode(
             3, QHeaderView.ResizeMode.ResizeToContents
         )  # Category
-        header.setSectionResizeMode(4, QHeaderView.ResizeMode.Stretch)  # Location
+        header.setSectionResizeMode(
+            4, QHeaderView.ResizeMode.ResizeToContents
+        )  # Location — size to content
         header.setSectionResizeMode(5, QHeaderView.ResizeMode.Stretch)  # Notes
         header.setSectionResizeMode(6, QHeaderView.ResizeMode.ResizeToContents)  # Photo
         header.setSectionResizeMode(7, QHeaderView.ResizeMode.ResizeToContents)  # Value
