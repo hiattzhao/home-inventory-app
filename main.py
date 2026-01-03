@@ -11,8 +11,8 @@ from PyQt6.QtWidgets import (
     QAbstractItemView, QLabel, QStyle, QStyleOptionButton, QSizePolicy,
     QCheckBox
 )
-from PyQt6.QtCore import Qt, pyqtSignal, QRect
-from PyQt6.QtGui import QAction, QIcon
+from PyQt6.QtCore import Qt, pyqtSignal, QRect, QSize
+from PyQt6.QtGui import QAction, QIcon, QPixmap
 
 from database import Database
 from item_dialog import ItemDialog
@@ -102,8 +102,13 @@ class MainWindow(QMainWindow):
         self.setMinimumSize(1100, 700)
         self.setWindowIcon(QIcon("icon.png"))
         
-        # Apply modern stylesheet (Disabled for OS default theme)
-        # self.setStyleSheet(Styles.get_main_stylesheet())
+        # Apply checkbox styling specifically while keeping OS native for others
+        self.setStyleSheet("""
+            QCheckBox::indicator, QTableWidget::indicator {
+                width: 16px;
+                height: 16px;
+            }
+        """)
         
         self.setup_ui()
         self.load_items()
@@ -142,7 +147,7 @@ class MainWindow(QMainWindow):
         # Resize columns
         # header = self.table.horizontalHeader()  # No longer needed as we set it above
         header.setSectionResizeMode(0, QHeaderView.ResizeMode.Fixed)  # Select checkbox
-        self.table.setColumnWidth(0, 50)
+        self.table.setColumnWidth(0, 40)
         header.setSectionResizeMode(1, QHeaderView.ResizeMode.ResizeToContents)  # Purchase Date
         header.setSectionResizeMode(2, QHeaderView.ResizeMode.Stretch)  # Name
         header.setSectionResizeMode(3, QHeaderView.ResizeMode.ResizeToContents)  # Category
@@ -197,7 +202,6 @@ class MainWindow(QMainWindow):
         toolbar = QToolBar("Main Toolbar")
         toolbar.setMovable(False)
         self.addToolBar(toolbar)
-        
         # Add item action
         add_action = QAction("Add Item", self)
         add_action.setShortcut("Ctrl+N")
