@@ -96,7 +96,7 @@ class ItemDialog(QDialog):
         
         # Notes field
         self.notes_input = QTextEdit()
-        self.notes_input.setPlaceholderText("Enter additional notes (optional)")
+        self.notes_input.setPlaceholderText("Enter additional notes such as serial number (optional)")
         self.notes_input.setMaximumHeight(100)
         form_layout.addRow("Notes:", self.notes_input)
         

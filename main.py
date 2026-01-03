@@ -9,7 +9,7 @@ from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QTableWidget, QTableWidgetItem,
     QVBoxLayout, QHBoxLayout, QWidget, QToolBar, QMessageBox, QHeaderView,
     QAbstractItemView, QLabel, QStyle, QStyleOptionButton, QSizePolicy,
-    QCheckBox
+    QCheckBox, QMenu
 )
 from PyQt6.QtCore import Qt, pyqtSignal, QRect, QSize
 from PyQt6.QtGui import QAction, QIcon, QPixmap
@@ -139,6 +139,8 @@ class MainWindow(QMainWindow):
         self.table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
         self.table.setAlternatingRowColors(True)
         self.table.setSortingEnabled(True)  # Enable sorting
+        self.table.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.table.customContextMenuRequested.connect(self.show_context_menu)
         
         # Custom header with checkbox
         header = CheckBoxHeader(Qt.Orientation.Horizontal, self.table)
@@ -454,6 +456,16 @@ class MainWindow(QMainWindow):
                 
                 self.statusBar().showMessage(f"Updated item: {data['name']}", 3000)
                 self.load_items()
+                
+                # Highlight the edited item
+                for row in range(self.table.rowCount()):
+                    row_id = self.table.item(row, 0).data(Qt.ItemDataRole.UserRole)
+                    if row_id == item_id:
+                        self.table.selectRow(row)
+                        item = self.table.item(row, 0)
+                        if item:
+                            self.table.scrollToItem(item)
+                        break
     
     def delete_item(self):
         """Delete selected item(s)."""
@@ -542,6 +554,25 @@ class MainWindow(QMainWindow):
         """Clear all filters and show all items."""
         self.load_items()
         self.statusBar().showMessage("Filters cleared", 3000)
+
+    def show_context_menu(self, pos):
+        """Show context menu for table items."""
+        row = self.table.rowAt(pos.y())
+        if row < 0:
+            return
+
+        # Select the row that was right-clicked
+        self.table.selectRow(row)
+
+        menu = QMenu(self)
+        
+        edit_action = menu.addAction("Edit Item")
+        edit_action.triggered.connect(self.edit_item)
+        
+        delete_action = menu.addAction("Delete Item")
+        delete_action.triggered.connect(self.delete_item)
+        
+        menu.exec(self.table.viewport().mapToGlobal(pos))
     
     def export_csv(self):
         """Export current items to CSV."""
