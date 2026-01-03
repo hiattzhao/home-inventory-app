@@ -35,3 +35,9 @@ CUSTOM_CATEGORIES.md
 GUI_MODERNIZATION.md
 MULTIPLE_PHOTOS.md
 SUMMARY_HEADER.md
+
+# Build / packaging
+.venv_build/
+build_executable.sh
+EXE_README.md
+HomeInventory.spec
