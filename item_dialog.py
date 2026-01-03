@@ -19,7 +19,7 @@ from styles import Styles
 class ItemDialog(QDialog):
     """Dialog for adding or editing inventory items."""
     
-    def __init__(self, parent=None, categories=None, item_data=None, default_category=None):
+    def __init__(self, parent=None, categories=None, item_data=None, default_category=None, default_date=None):
         """
         Initialize the item dialog.
         
@@ -33,6 +33,7 @@ class ItemDialog(QDialog):
         self.categories = categories or []
         self.item_data = item_data
         self.default_category = default_category
+        self.default_date = default_date
         self.photos = []  # List of photo paths
         self.photo_ids = []  # List of photo IDs from database (for editing)
         self.is_edit_mode = item_data is not None
@@ -90,7 +91,13 @@ class ItemDialog(QDialog):
         # Purchase date field
         self.date_input = QDateEdit()
         self.date_input.setCalendarPopup(True)
-        self.date_input.setDate(QDate.currentDate())
+        
+        # Use default_date if provided, otherwise use current date
+        if self.default_date and not self.is_edit_mode:
+            self.date_input.setDate(self.default_date)
+        else:
+            self.date_input.setDate(QDate.currentDate())
+            
         self.date_input.setDisplayFormat("yyyy-MM-dd")
         form_layout.addRow("Purchase Date:", self.date_input)
         

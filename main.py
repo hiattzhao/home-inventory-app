@@ -16,6 +16,7 @@ from PyQt6.QtGui import QAction, QIcon, QPixmap
 
 from database import Database
 from item_dialog import ItemDialog
+from category_dialog import CategoryDialog
 from search_dialog import SearchDialog
 from export_csv import CSVExporter
 from export_pdf import PDFExporter
@@ -97,6 +98,7 @@ class MainWindow(QMainWindow):
         self.current_items = []
         self.is_filtered = False
         self.last_selected_category = None  # Track last used category
+        self.last_selected_date = None      # Track last used date
         
         self.setWindowTitle("Home Inventory Manager")
         self.setMinimumSize(1100, 700)
@@ -186,6 +188,12 @@ class MainWindow(QMainWindow):
         export_pdf_action.setShortcut("Ctrl+P")
         export_pdf_action.triggered.connect(self.export_pdf)
         file_menu.addAction(export_pdf_action)
+        
+        file_menu.addSeparator()
+        
+        configure_categories_action = QAction("Configure &Categories", self)
+        configure_categories_action.triggered.connect(self.configure_categories)
+        file_menu.addAction(configure_categories_action)
         
         file_menu.addSeparator()
         
@@ -376,11 +384,19 @@ class MainWindow(QMainWindow):
     def add_item(self):
         """Open dialog to add a new item."""
         categories = self.db.get_categories()  # Refresh categories from database
-        dialog = ItemDialog(self, categories, default_category=self.last_selected_category)
+        
+        # Convert last_selected_date string back to QDate if it exists
+        default_qdate = None
+        if self.last_selected_date:
+            from PyQt6.QtCore import QDate
+            default_qdate = QDate.fromString(self.last_selected_date, "yyyy-MM-dd")
+
+        dialog = ItemDialog(self, categories, default_category=self.last_selected_category, default_date=default_qdate)
         
         if dialog.exec():
             data = dialog.get_data()
             self.last_selected_category = data['category']  # Remember category
+            self.last_selected_date = data['purchase_date'] # Remember date
             item_id = self.db.add_item(
                 data['name'],
                 data['category'],
@@ -439,6 +455,7 @@ class MainWindow(QMainWindow):
             )
             
             if success:
+                self.last_selected_date = data['purchase_date'] # Remember date
                 # Update photos: delete old ones and add new ones
                 # Get existing photo IDs
                 existing_photos = self.db.get_item_photos(item_id)
@@ -581,6 +598,14 @@ class MainWindow(QMainWindow):
     def export_pdf(self):
         """Export current items to PDF."""
         PDFExporter.export(self, self.current_items)
+
+    def configure_categories(self):
+        """Open the category configuration dialog."""
+        dialog = CategoryDialog(self, self.db)
+        if dialog.exec():
+            # No specific action needed if dialog was just closed
+            # but categories are updated in the database by the dialog itself.
+            pass
     
     def show_about(self):
         """Show about dialog."""
