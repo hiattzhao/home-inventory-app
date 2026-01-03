@@ -8,6 +8,7 @@ from PyQt6.QtWidgets import (
     QDoubleSpinBox, QDateEdit
 )
 from PyQt6.QtCore import QDate
+from PyQt6.QtGui import QIcon
 from styles import Styles
 
 
@@ -27,6 +28,7 @@ class SearchDialog(QDialog):
         
         self.setWindowTitle("Search & Filter Items")
         self.setMinimumWidth(450)
+        self.setWindowIcon(QIcon("icon.png"))
         
         # Apply dialog stylesheet (Disabled for OS default theme)
         # self.setStyleSheet(Styles.get_dialog_stylesheet())

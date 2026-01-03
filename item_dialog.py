@@ -39,6 +39,7 @@ class ItemDialog(QDialog):
         
         self.setWindowTitle("Edit Item" if self.is_edit_mode else "Add Item")
         self.setMinimumWidth(600)
+        self.setWindowIcon(QIcon("icon.png"))
         
         # Apply dialog stylesheet (Disabled for OS default theme)
         # self.setStyleSheet(Styles.get_dialog_stylesheet())

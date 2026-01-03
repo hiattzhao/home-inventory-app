@@ -100,6 +100,7 @@ class MainWindow(QMainWindow):
         
         self.setWindowTitle("Home Inventory Manager")
         self.setMinimumSize(1100, 700)
+        self.setWindowIcon(QIcon("icon.png"))
         
         # Apply modern stylesheet (Disabled for OS default theme)
         # self.setStyleSheet(Styles.get_main_stylesheet())
@@ -232,46 +233,34 @@ class MainWindow(QMainWindow):
         
         # Total Items
         self.total_items_label = QLabel("Total Items: 0")
-        self.total_items_label.setStyleSheet(f"""
-            QLabel {{
+        self.total_items_label.setStyleSheet("""
+            QLabel {
                 font-size: 12px;
                 font-weight: bold;
-                padding: 2px 6px;
-                background-color: {Styles.SECONDARY_COLOR};
-                color: white;
-                border-radius: 4px;
-                margin-left: 4px;
-            }}
+                margin-left: 10px;
+            }
         """)
         toolbar.addWidget(self.total_items_label)
         
         # Total Photos
         self.total_photos_label = QLabel("Total Photos: 0")
-        self.total_photos_label.setStyleSheet(f"""
-            QLabel {{
+        self.total_photos_label.setStyleSheet("""
+            QLabel {
                 font-size: 12px;
                 font-weight: bold;
-                padding: 2px 6px;
-                background-color: {Styles.SECONDARY_COLOR};
-                color: white;
-                border-radius: 4px;
-                margin-left: 4px;
-            }}
+                margin-left: 10px;
+            }
         """)
         toolbar.addWidget(self.total_photos_label)
 
         # Total Value
         self.total_value_label = QLabel("Total Value: $0.00")
-        self.total_value_label.setStyleSheet(f"""
-            QLabel {{
+        self.total_value_label.setStyleSheet("""
+            QLabel {
                 font-size: 12px;
                 font-weight: bold;
-                padding: 2px 6px;
-                background-color: {Styles.SECONDARY_COLOR};
-                color: white;
-                border-radius: 4px;
-                margin-left: 4px;
-            }}
+                margin-left: 10px;
+            }
         """)
         toolbar.addWidget(self.total_value_label)
     
