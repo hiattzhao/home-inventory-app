@@ -114,6 +114,7 @@ class ItemDialog(QDialog):
         location_layout = QHBoxLayout()
         self.location_input = QComboBox()
         self.location_input.setEditable(True)
+        self.location_input.addItem("")  # Blank option for optional location
         self.location_input.addItems(self.locations)
         if (
             self.default_location
@@ -335,12 +336,9 @@ class ItemDialog(QDialog):
         """Add a new custom category."""
         from PyQt6.QtWidgets import QInputDialog
 
-        # Get the current text from the combo box (in case user typed something)
-        current_text = self.category_combo.currentText().strip()
-
-        # Show input dialog
+        # Always show blank textbox for new category
         category_name, ok = QInputDialog.getText(
-            self, "Add New Category", "Enter category name:", text=current_text
+            self, "Add New Category", "Enter category name:", text=""
         )
 
         if ok and category_name.strip():
@@ -397,9 +395,9 @@ class ItemDialog(QDialog):
         """Add a new custom location."""
         from PyQt6.QtWidgets import QInputDialog
 
-        current_text = self.location_input.currentText().strip()
+        # Always show blank textbox for new location
         location_name, ok = QInputDialog.getText(
-            self, "Add New Location", "Enter location name:", text=current_text
+            self, "Add New Location", "Enter location name:", text=""
         )
 
         if ok and location_name.strip():

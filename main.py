@@ -618,7 +618,8 @@ class MainWindow(QMainWindow):
     def search_items(self):
         """Open search dialog and filter items."""
         categories = self.db.get_categories()  # Refresh categories from database
-        dialog = SearchDialog(self, categories)
+        locations = self.db.get_locations()
+        dialog = SearchDialog(self, categories, locations)
 
         if dialog.exec():
             filters = dialog.get_filters()
