@@ -694,7 +694,7 @@ class MainWindow(QMainWindow):
             "<p><b>Features:</b></p>"
             "<ul>"
             "<li>Add, edit, and delete items</li>"
-            "<li>Organize by categories</li>"
+            "<li>Organize by categories and locations</li>"
             "<li>Track values and purchase dates</li>"
             "<li>Attach photos to items</li>"
             "<li>Search and filter items</li>"
