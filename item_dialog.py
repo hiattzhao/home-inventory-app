@@ -160,6 +160,8 @@ class ItemDialog(QDialog):
             "Enter additional notes such as serial number (optional)"
         )
         self.notes_input.setMaximumHeight(100)
+        # Ensure Tab moves focus (no multi-tab indentation inside notes)
+        self.notes_input.setTabChangesFocus(True)
         form_layout.addRow("Notes:", self.notes_input)
 
         layout.addLayout(form_layout)
