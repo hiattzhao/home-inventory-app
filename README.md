@@ -105,4 +105,4 @@ Alternatively, you can type a new category name directly in the category field (
 
 ## License
 
-This project is open source and available for personal use.
+All rights reserved. See [LICENSE](home-inventory-app/LICENSE).
