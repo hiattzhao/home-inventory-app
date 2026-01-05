@@ -32,6 +32,7 @@ from item_dialog import ItemDialog
 from category_dialog import CategoryDialog
 from location_dialog import LocationDialog
 from search_dialog import SearchDialog
+from analysis_dialog import AnalysisDialog
 from export_csv import CSVExporter
 from export_pdf import PDFExporter
 from styles import Styles
@@ -237,6 +238,13 @@ class MainWindow(QMainWindow):
         configure_locations_action = QAction("Configure &Locations", self)
         configure_locations_action.triggered.connect(self.configure_locations)
         file_menu.addAction(configure_locations_action)
+
+        file_menu.addSeparator()
+
+        analyze_action = QAction("&Analyze", self)
+        analyze_action.setShortcut("Ctrl+A")
+        analyze_action.triggered.connect(self.show_analysis)
+        file_menu.addAction(analyze_action)
 
         file_menu.addSeparator()
 
@@ -683,6 +691,11 @@ class MainWindow(QMainWindow):
             # Locations updated in database by dialog
             pass
 
+    def show_analysis(self):
+        """Open the analysis dialog."""
+        dialog = AnalysisDialog(self, self.db)
+        dialog.exec()
+
     def show_about(self):
         """Show about dialog."""
         QMessageBox.about(
@@ -698,6 +711,7 @@ class MainWindow(QMainWindow):
             "<li>Track values and purchase dates</li>"
             "<li>Attach photos to items</li>"
             "<li>Search and filter items</li>"
+            "<li>Analyze data with pie charts and histograms</li>"
             "<li>Export to CSV or PDF</li>"
             "</ul>",
         )
