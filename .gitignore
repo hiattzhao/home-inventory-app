@@ -42,6 +42,8 @@ BUILD_INFO.md
 # Build / packaging
 .venv_build/
 build_executable.sh
+build_appimage.sh
+appimagetool
 EXE_README.md
 HomeInventory.spec
 Home Inventory Manager.spec

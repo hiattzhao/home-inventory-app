@@ -702,7 +702,7 @@ class MainWindow(QMainWindow):
             self,
             "About Home Inventory Manager",
             "<h2>Home Inventory Manager</h2>"
-            "<p>Version 1.0</p>"
+            "<p>Version 1.0.0</p>"
             "<p>A cross-platform desktop application for managing your home inventory.</p>"
             "<p><b>Features:</b></p>"
             "<ul>"
