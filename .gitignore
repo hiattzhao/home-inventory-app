@@ -18,6 +18,7 @@ inventory.db
 
 # Photos
 photos/
+icon-backup.png
 
 # IDE
 .vscode/
@@ -43,6 +44,11 @@ build_executable.sh
 EXE_README.md
 HomeInventory.spec
 
+# Ignore build output trees and installer bundle
+installer/
+
 # Packaging helper files
 README-PACKAGING.md
 build_deb.sh
+build_installer.sh
+build_run_installer.sh
