@@ -44,6 +44,7 @@ BUILD_INFO.md
 build_executable.sh
 EXE_README.md
 HomeInventory.spec
+Home Inventory Manager.spec
 
 # Ignore build output trees and installer bundle
 installer/
