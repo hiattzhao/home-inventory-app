@@ -454,9 +454,12 @@ class ItemDialog(QDialog):
             self.name_input.setFocus()
             return
 
-        if self.value_input.value() <= 0:
+        # Allow zero-value items; only disallow negative values
+        if self.value_input.value() < 0:
             QMessageBox.warning(
-                self, "Validation Error", "Please enter a valid value greater than 0."
+                self,
+                "Validation Error",
+                "Please enter a valid non-negative value (0 or greater).",
             )
             self.value_input.setFocus()
             return
