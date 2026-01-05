@@ -42,3 +42,7 @@ BUILD_INFO.md
 build_executable.sh
 EXE_README.md
 HomeInventory.spec
+
+# Packaging helper files
+README-PACKAGING.md
+build_deb.sh
