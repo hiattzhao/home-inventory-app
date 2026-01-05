@@ -105,4 +105,4 @@ Alternatively, you can type a new category name directly in the category field (
 
 ## License
 
-All rights reserved. See [LICENSE](home-inventory-app/LICENSE).
+All rights reserved. See [LICENSE](LICENSE).
