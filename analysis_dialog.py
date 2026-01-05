@@ -19,6 +19,7 @@ from PyQt6.QtGui import QIcon
 from PyQt6.QtCore import QDate
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends import backend_pdf  # Force bundling of PDF backend for exports
 from matplotlib.figure import Figure
 from collections import defaultdict
 
