@@ -35,6 +35,7 @@ CUSTOM_CATEGORIES.md
 GUI_MODERNIZATION.md
 MULTIPLE_PHOTOS.md
 SUMMARY_HEADER.md
+BUILD_INFO.md
 
 # Build / packaging
 .venv_build/
