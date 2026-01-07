@@ -45,9 +45,6 @@ build_executable.sh
 build_appimage.sh
 appimagetool
 EXE_README.md
-HomeInventory.spec
-Home Inventory Manager.spec
-Home Inventory.spec
 app.rc
 
 # Ignore build output trees and installer bundle
