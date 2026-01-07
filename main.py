@@ -138,7 +138,14 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle("Home Inventory Manager")
         self.setMinimumSize(1100, 700)
-        self.setWindowIcon(QIcon("icon.png"))
+        
+        # Set window icon
+        icon_path = os.path.join(os.path.dirname(__file__), "icon.png")
+        if os.path.exists(icon_path):
+            self.setWindowIcon(QIcon(icon_path))
+        else:
+            # Fallback to relative path if absolute path doesn't work
+            self.setWindowIcon(QIcon("icon.png"))
 
         # Apply checkbox styling specifically while keeping OS native for others
         self.setStyleSheet(

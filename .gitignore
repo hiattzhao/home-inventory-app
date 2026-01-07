@@ -47,6 +47,7 @@ appimagetool
 EXE_README.md
 HomeInventory.spec
 Home Inventory Manager.spec
+Home Inventory.spec
 
 # Ignore build output trees and installer bundle
 installer/
