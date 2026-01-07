@@ -55,3 +55,8 @@ README-PACKAGING.md
 build_deb.sh
 build_installer.sh
 build_run_installer.sh
+
+# Ignore icns/icns helper scripts
+create_icns_simple.py
+create_icns.py
+create_icns.sh

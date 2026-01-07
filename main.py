@@ -27,6 +27,7 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtCore import Qt, pyqtSignal, QRect, QSize
 from PyQt6.QtGui import QAction, QIcon, QPixmap
+from PyQt6.QtWidgets import QMenuBar
 
 from database import Database
 from item_dialog import ItemDialog
@@ -139,20 +140,8 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle("Home Inventory Manager")
         self.setMinimumSize(1100, 700)
-        
-        # Set window icon based on OS
-        if platform.system() == "Windows":
-            icon_file = "icon.ico"
-        else:
-            # Use PNG for Linux and other operating systems
-            icon_file = "icon.png"
-        
-        icon_path = os.path.join(os.path.dirname(__file__), icon_file)
-        if os.path.exists(icon_path):
-            self.setWindowIcon(QIcon(icon_path))
-        else:
-            # Fallback to relative path if absolute path doesn't work
-            self.setWindowIcon(QIcon(icon_file))
+
+        # Application icon is set at startup in `main()` to avoid duplication.
 
         # Apply checkbox styling specifically while keeping OS native for others
         self.setStyleSheet(
@@ -244,6 +233,10 @@ class MainWindow(QMainWindow):
         """Create the menu bar."""
         menubar = self.menuBar()
 
+        # On macOS, disable native menu bar to ensure all menus show properly
+        if platform.system() == "Darwin":
+            menubar.setNativeMenuBar(False)
+
         # File menu
         file_menu = menubar.addMenu("&File")
 
@@ -290,6 +283,9 @@ class MainWindow(QMainWindow):
         help_menu = menubar.addMenu("&Help")
 
         about_action = QAction("&About", self)
+        about_action.setMenuRole(
+            QAction.MenuRole.NoRole
+        )  # Prevent macOS from moving this to app menu
         about_action.triggered.connect(self.show_about)
         help_menu.addAction(about_action)
 
@@ -771,6 +767,19 @@ class MainWindow(QMainWindow):
 def main():
     """Main application entry point."""
     app = QApplication(sys.argv)
+
+    # Set application icon (use .icns on macOS only)
+    if platform.system() == "Windows":
+        icon_file = "icon.ico"
+    elif platform.system() == "Darwin":
+        icon_file = "icon.icns"
+    else:
+        # Use PNG for Linux and other operating systems
+        icon_file = "icon.png"
+
+    icon_path = os.path.join(os.path.dirname(__file__), icon_file)
+    if os.path.exists(icon_path):
+        app.setWindowIcon(QIcon(icon_path))
 
     # Set application style
     app.setStyle("Fusion")
