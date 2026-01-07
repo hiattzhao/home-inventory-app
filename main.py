@@ -39,6 +39,18 @@ from export_pdf import PDFExporter
 from styles import Styles
 
 
+def get_app_version():
+    """Read application version from the VERSION file.
+    Falls back to a default if unavailable.
+    """
+    try:
+        version_path = os.path.join(os.path.dirname(__file__), "VERSION")
+        with open(version_path, "r", encoding="utf-8") as f:
+            return f.read().strip() or "1.0.0"
+    except Exception:
+        return "1.0.0"
+
+
 class SortableTableWidgetItem(QTableWidgetItem):
     """
     Custom TableWidgetItem that sorts based on a specific value
@@ -118,6 +130,7 @@ class MainWindow(QMainWindow):
         # Initialize database
         self.db = Database()
         self.current_items = []
+        self.app_version = get_app_version()
         self.is_filtered = False
         self.last_selected_category = None  # Track last used category
         self.last_selected_date = None  # Track last used date
@@ -710,11 +723,9 @@ class MainWindow(QMainWindow):
 
     def show_about(self):
         """Show about dialog."""
-        QMessageBox.about(
-            self,
-            "About Home Inventory Manager",
+        content = (
             "<h2>Home Inventory Manager</h2>"
-            "<p>Version 1.0.0</p>"
+            f"<p>Version {self.app_version}</p>"
             "<p>A cross-platform desktop application for managing your home inventory.</p>"
             "<p><b>Features:</b></p>"
             "<ul>"
@@ -726,8 +737,16 @@ class MainWindow(QMainWindow):
             "<li>Analyze data with pie charts and histograms</li>"
             "<li>Import from CSV</li>"
             "<li>Export to CSV or PDF</li>"
-            "</ul>",
+            "</ul>"
+            "<hr>"
+            "<p>This application is developed and maintained by Hiatt Zhao from a desire to reduce possessions and material impact on the planet.</p>"
+            "<p>This application does not collect any information. You are the master of your own data. This application also does not guarantee anything. Use as is.</p>"
+            '<p>For any inquires, such as feature requests, feedbacks, support, please contact Hiatt at <a href="mailto:hiattzhao@gmail.com">hiattzhao@gmail.com</a>.</p>'
+            "<p>Thank you for using this application and for the support!</p>"
+            "<hr>"
+            "<p>Copyright (c) 2026 Home Inventory Manager. All rights reserved.</p>"
         )
+        QMessageBox.about(self, "About Home Inventory Manager", content)
 
     def closeEvent(self, event):
         """Handle application close event."""
