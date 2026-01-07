@@ -5,6 +5,7 @@ A cross-platform desktop application for managing home inventory.
 
 import sys
 import os
+import platform
 from PyQt6.QtWidgets import (
     QApplication,
     QMainWindow,
@@ -139,13 +140,19 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("Home Inventory Manager")
         self.setMinimumSize(1100, 700)
         
-        # Set window icon
-        icon_path = os.path.join(os.path.dirname(__file__), "icon.png")
+        # Set window icon based on OS
+        if platform.system() == "Windows":
+            icon_file = "icon.ico"
+        else:
+            # Use PNG for Linux and other operating systems
+            icon_file = "icon.png"
+        
+        icon_path = os.path.join(os.path.dirname(__file__), icon_file)
         if os.path.exists(icon_path):
             self.setWindowIcon(QIcon(icon_path))
         else:
             # Fallback to relative path if absolute path doesn't work
-            self.setWindowIcon(QIcon("icon.png"))
+            self.setWindowIcon(QIcon(icon_file))
 
         # Apply checkbox styling specifically while keeping OS native for others
         self.setStyleSheet(
