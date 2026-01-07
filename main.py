@@ -34,6 +34,7 @@ from location_dialog import LocationDialog
 from search_dialog import SearchDialog
 from analysis_dialog import AnalysisDialog
 from export_csv import CSVExporter
+from import_csv import CSVImporter
 from export_pdf import PDFExporter
 from styles import Styles
 
@@ -218,6 +219,11 @@ class MainWindow(QMainWindow):
 
         # File menu
         file_menu = menubar.addMenu("&File")
+
+        import_csv_action = QAction("&Import from CSV", self)
+        import_csv_action.setShortcut("Ctrl+I")
+        import_csv_action.triggered.connect(self.import_csv)
+        file_menu.addAction(import_csv_action)
 
         export_csv_action = QAction("Export to &CSV", self)
         export_csv_action.setShortcut("Ctrl+E")
@@ -668,6 +674,12 @@ class MainWindow(QMainWindow):
 
         menu.exec(self.table.viewport().mapToGlobal(pos))
 
+    def import_csv(self):
+        """Import items from CSV file."""
+        imported_count = CSVImporter.import_csv(self)
+        if imported_count > 0:
+            self.load_items()
+
     def export_csv(self):
         """Export current items to CSV."""
         CSVExporter.export(self, self.current_items)
@@ -712,6 +724,7 @@ class MainWindow(QMainWindow):
             "<li>Attach photos to items</li>"
             "<li>Search and filter items</li>"
             "<li>Analyze data with pie charts and histograms</li>"
+            "<li>Import from CSV</li>"
             "<li>Export to CSV or PDF</li>"
             "</ul>",
         )
