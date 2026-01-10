@@ -43,9 +43,15 @@ BUILD_INFO.md
 .venv_build/
 build_executable.sh
 build_appimage.sh
+build_debuild.sh
 appimagetool
 EXE_README.md
 app.rc
+.github/
+debian/
+DEBIAN-PACKAGING.md
+DEBUILD-SETUP.md
+home-inventory-app.desktop
 
 # Ignore build output trees and installer bundle
 installer/
