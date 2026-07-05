@@ -753,9 +753,11 @@ class MainWindow(QMainWindow):
             "<p>This application does not collect any information. You are the master of your own data. This application also does not guarantee anything. Use as is.</p>"
             '<p>For any inquires, such as feature requests, feedbacks, support, please contact Hiatt at <a href="mailto:hiattzhao@gmail.com">hiattzhao@gmail.com</a>.</p>'
             "<p>Thank you for using this application and for the support!</p>"
+            '<p>Donate via <a href="https://paypal.me/hiattzhao">PayPal</a> or <a href="https://venmo.com/hiattzhao">Venmo</a></p>'
             "<hr>"
             "<p>MIT License</p>"
             "<p>Copyright (c) 2026 Home Inventory Manager.</p>"
+            '<p>Source code: <a href="https://github.com/hiattzhao/home-inventory-app">GitHub</a></p>'
         )
         QMessageBox.about(self, "About Home Inventory Manager", content)
 

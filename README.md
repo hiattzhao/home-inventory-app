@@ -1,4 +1,4 @@
-# Home Inventory Application
+# Home Inventory Manager
 
 A cross-platform desktop application for managing your home inventory with categories, photos, search, and export capabilities.
 
@@ -38,6 +38,33 @@ Run the application:
 ```bash
 python main.py
 ```
+
+## Exporting for macOS with py2app
+
+On macOS, you can package the app as a standalone application bundle with py2app.
+
+1. **Install py2app** (inside the same virtual environment if you use one):
+
+   ```bash
+   pip install py2app
+   ```
+
+2. **Build the app** from the project directory:
+
+   ```bash
+   python3 setup.py py2app
+   ```
+
+3. **Find the exported application** in the project folder:
+   - The build output will be created in the `dist/` directory
+   - The app bundle will appear as `dist/Home Inventory Manager.app`
+
+4. **Run the packaged app** by opening the `.app` bundle in Finder, or from Terminal:
+   ```bash
+   open dist/"Home Inventory Manager.app"
+   ```
+
+> The project already includes a setup script that uses the app entry point in `main.py` and the icon file `icon.icns`.
 
 ### Adding Items
 
