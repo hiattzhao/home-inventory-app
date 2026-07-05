@@ -754,7 +754,8 @@ class MainWindow(QMainWindow):
             '<p>For any inquires, such as feature requests, feedbacks, support, please contact Hiatt at <a href="mailto:hiattzhao@gmail.com">hiattzhao@gmail.com</a>.</p>'
             "<p>Thank you for using this application and for the support!</p>"
             "<hr>"
-            "<p>Copyright (c) 2026 Home Inventory Manager. All rights reserved.</p>"
+            "<p>MIT License</p>"
+            "<p>Copyright (c) 2026 Home Inventory Manager.</p>"
         )
         QMessageBox.about(self, "About Home Inventory Manager", content)
 
