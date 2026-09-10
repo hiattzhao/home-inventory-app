@@ -114,6 +114,31 @@ On macOS, you can package the app as a standalone application bundle with py2app
 
 > The project already includes a setup script that uses the app entry point in `main.py` and the icon file `icon.icns`.
 
+## Exporting for Linux with pyinstaller
+
+On Linux, you can package the app as a standalone executable with PyInstaller.
+
+1. **Install PyInstaller** (inside the same virtual environment if you use one):
+
+   ```bash
+   pip install pyinstaller
+   ```
+
+2. **Build the executable** from the project directory:
+
+   ```bash
+   pyinstaller --onefile main.py
+   ```
+
+3. **Find the exported executable** in the project folder:
+   - The build output will be created in the `dist/` directory
+   - The executable will appear as `dist/main`
+
+4. **Run the packaged app** from Terminal:
+   ```bash
+   ./dist/main
+   ```
+
 ## Technical Details
 
 - **Framework**: PyQt6
