@@ -197,6 +197,7 @@ Give the desktop file proper execution rights and trigger Omarchy's menu system 
 
    update-desktop-database ~/.local/share/applications
    ```
+Now, just hit Super + Space on your keyboard, type "Home Inventory Manager", and the app will launch instantly.
 
 ## Technical Details
 
