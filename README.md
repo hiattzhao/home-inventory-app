@@ -159,6 +159,7 @@ On Linux, you can package the app as a standalone executable with PyInstaller.
    ```
 
 4. Apply the Changes
+
 To make your terminal recognize the changes immediately without restarting it, reload your configuration file:
 
    ```bash
@@ -169,6 +170,7 @@ To make your terminal recognize the changes immediately without restarting it, r
    source ~/.zshrc
    ```
 5. Create the Launcher Directory and .desktop Entry 
+
 If it doesn't already exist, create the local user directory where Linux environments store desktop shortcuts:
 
    ```bash
@@ -190,6 +192,7 @@ Categories=Utility;
 ```
 
 6. Make Executable & Update Database (for Omarchy)
+
 Give the desktop file proper execution rights and trigger Omarchy's menu system to re-index it immediately:
 
    ```bash
@@ -197,6 +200,7 @@ Give the desktop file proper execution rights and trigger Omarchy's menu system 
 
    update-desktop-database ~/.local/share/applications
    ```
+
 Now, just hit Super + Space on your keyboard, type "Home Inventory Manager", and the app will launch instantly.
 
 ## Technical Details
