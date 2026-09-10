@@ -25,8 +25,8 @@ from PyQt6.QtWidgets import (
     QCheckBox,
     QMenu,
 )
-from PyQt6.QtCore import Qt, pyqtSignal, QRect, QSize
-from PyQt6.QtGui import QAction, QIcon, QPixmap
+from PyQt6.QtCore import Qt, pyqtSignal, QRect, QSize, QEvent
+from PyQt6.QtGui import QAction, QIcon, QPixmap, QPalette
 from PyQt6.QtWidgets import QMenuBar
 
 from database import Database
@@ -229,6 +229,23 @@ class MainWindow(QMainWindow):
         # Status bar
         self.statusBar().showMessage("Ready")
 
+    def changeEvent(self, event):
+        """Refresh theme-dependent controls when the desktop theme changes."""
+        super().changeEvent(event)
+        if event.type() in (
+            QEvent.Type.PaletteChange,
+            QEvent.Type.StyleChange,
+        ):
+            self.update_toolbar_theme()
+
+    def update_toolbar_theme(self):
+        """Keep the toolbar background aligned with the main window palette."""
+        if hasattr(self, "toolbar"):
+            window_color = self.palette().color(QPalette.ColorRole.Window).name()
+            self.toolbar.setStyleSheet(
+                f"QToolBar {{ background-color: {window_color}; }}"
+            )
+
     def create_menu_bar(self):
         """Create the menu bar."""
         menubar = self.menuBar()
@@ -291,41 +308,42 @@ class MainWindow(QMainWindow):
 
     def create_toolbar(self):
         """Create the toolbar."""
-        toolbar = QToolBar("Main Toolbar")
-        toolbar.setMovable(False)
-        self.addToolBar(toolbar)
+        self.toolbar = QToolBar("Main Toolbar")
+        self.toolbar.setMovable(False)
+        self.addToolBar(self.toolbar)
+        self.update_toolbar_theme()
         # Add item action
         add_action = QAction("Add Item", self)
         add_action.setShortcut("Ctrl+N")
         add_action.triggered.connect(self.add_item)
-        toolbar.addAction(add_action)
+        self.toolbar.addAction(add_action)
 
         # Edit item action
         edit_action = QAction("Edit Item", self)
         edit_action.setShortcut("Ctrl+E")
         edit_action.triggered.connect(self.edit_item)
-        toolbar.addAction(edit_action)
+        self.toolbar.addAction(edit_action)
 
         # Delete item action
         delete_action = QAction("Delete Item", self)
         delete_action.setShortcut("Delete")
         delete_action.triggered.connect(self.delete_item)
-        toolbar.addAction(delete_action)
+        self.toolbar.addAction(delete_action)
 
         # Search action
         search_action = QAction("Search", self)
         search_action.setShortcut("Ctrl+F")
         search_action.triggered.connect(self.search_items)
-        toolbar.addAction(search_action)
+        self.toolbar.addAction(search_action)
 
         clear_action = QAction("Clear Filters", self)
         clear_action.triggered.connect(self.clear_filters)
-        toolbar.addAction(clear_action)
+        self.toolbar.addAction(clear_action)
 
         # Spacer to push summary to right
         spacer = QWidget()
         spacer.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred)
-        toolbar.addWidget(spacer)
+        self.toolbar.addWidget(spacer)
 
         # Total Items
         self.total_items_label = QLabel("Total Items: 0")
@@ -338,7 +356,7 @@ class MainWindow(QMainWindow):
             }
         """
         )
-        toolbar.addWidget(self.total_items_label)
+        self.toolbar.addWidget(self.total_items_label)
 
         # Total Photos
         self.total_photos_label = QLabel("Total Photos: 0")
@@ -351,7 +369,7 @@ class MainWindow(QMainWindow):
             }
         """
         )
-        toolbar.addWidget(self.total_photos_label)
+        self.toolbar.addWidget(self.total_photos_label)
 
         # Total Value
         self.total_value_label = QLabel("Total Value: $0.00")
@@ -364,7 +382,7 @@ class MainWindow(QMainWindow):
             }
         """
         )
-        toolbar.addWidget(self.total_value_label)
+        self.toolbar.addWidget(self.total_value_label)
 
     def load_items(self, items=None):
         """
@@ -783,9 +801,6 @@ def main():
     icon_path = os.path.join(os.path.dirname(__file__), icon_file)
     if os.path.exists(icon_path):
         app.setWindowIcon(QIcon(icon_path))
-
-    # Set application style
-    app.setStyle("Fusion")
 
     window = MainWindow()
     window.show()
