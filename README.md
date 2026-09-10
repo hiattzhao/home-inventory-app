@@ -139,6 +139,65 @@ On Linux, you can package the app as a standalone executable with PyInstaller.
    ./dist/main
    ```
 
+### Move the app to a User-Specific Directory and Launch it
+0. Rename main to "Home Inventory Manager" (without quotes)
+
+1. Create a local bin directory if it doesn't exist:
+
+   ```bash
+   mkdir -p ~/.local/bin
+   ```
+
+2. Move the executable there
+   ```bash
+   mv "Home Inventory Manager" ~/.local/bin/"Home Inventory Manager"
+   ```
+
+3. Ensure ~/.local/bin is in your PATH by adding this line to your shell configuration file (like ~/.bashrc or ~/.zshrc):
+   ```bash
+   export PATH="$HOME/.local/bin:$PATH"
+   ```
+
+4. Apply the Changes
+To make your terminal recognize the changes immediately without restarting it, reload your configuration file:
+
+   ```bash
+   # If using Bash
+   source ~/.bashrc
+
+   # If using Zsh
+   source ~/.zshrc
+   ```
+5. Create the Launcher Directory and .desktop Entry 
+If it doesn't already exist, create the local user directory where Linux environments store desktop shortcuts:
+
+   ```bash
+   mkdir -p ~/.local/share/applications
+   
+   nano ~/.local/share/applications/"Home Inventory Manager.desktop"
+   ```
+Paste the following configuration template inside it:
+
+```
+[Desktop Entry]
+Type=Application
+Name=Home Inventory Manager
+Comment=A cross-platform desktop application for managing your home inventory
+Exec="Home Inventory Manager"
+Icon=utilities-terminal
+Terminal=false
+Categories=Utility;
+```
+
+6. Make Executable & Update Database (for Omarchy)
+Give the desktop file proper execution rights and trigger Omarchy's menu system to re-index it immediately:
+
+   ```bash
+   chmod +x ~/.local/share/applications/"Home Inventory Manager.desktop"
+
+   update-desktop-database ~/.local/share/applications
+   ```
+
 ## Technical Details
 
 - **Framework**: PyQt6
