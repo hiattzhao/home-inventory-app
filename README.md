@@ -112,7 +112,7 @@ On macOS, you can package the app as a standalone application bundle with py2app
    open dist/"Home Inventory Manager.app"
    ```
 
-> The project already includes a setup script that uses the app entry point in `main.py` and the icon file `icon.icns`.
+> The setup script includes the `VERSION` file and uses the app entry point in `main.py` and the icon file `icon.icns`.
 
 ## Exporting for Linux with pyinstaller
 
@@ -127,7 +127,7 @@ On Linux, you can package the app as a standalone executable with PyInstaller.
 2. **Build the executable** from the project directory:
 
    ```bash
-   pyinstaller --onefile main.py
+   pyinstaller --onefile --add-data "VERSION:." main.py
    ```
 
 3. **Find the exported executable** in the project folder:

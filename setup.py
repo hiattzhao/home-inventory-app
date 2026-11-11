@@ -8,7 +8,7 @@ Usage:
 from setuptools import setup
 
 APP = ['main.py']
-DATA_FILES = ['icon.png']
+DATA_FILES = ['icon.png', 'VERSION']
 OPTIONS = {
     'iconfile': 'icon.icns',
 }
